@@ -1,0 +1,98 @@
+import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MNISTReader {
+	
+	public List<MnistObject> MnistRead() {
+
+        String train_label_filename = "E:\\t10k-labels.idx1-ubyte";
+        String train_image_filename = "E:\\t10k-images.idx3-ubyte";
+
+        DataInputStream label_data_stream = null;
+        DataInputStream image_data_stream = null;
+
+        List<MnistObject> train_data_list = null;
+        try {
+            label_data_stream = new DataInputStream(new FileInputStream(train_label_filename));
+            image_data_stream = new DataInputStream(new FileInputStream(train_image_filename));
+
+            int startcode_label = label_data_stream.readInt();
+            int startcode_img = image_data_stream.readInt();
+            System.out.println("Label start code  = " + startcode_label + " Image start code = " + startcode_img);
+
+            int number_of_labels = label_data_stream.readInt();
+            int number_of_images = image_data_stream.readInt();
+            System.out.println("numbers of labels : " + number_of_labels + " number of images : " + number_of_images);
+
+            int image_height = image_data_stream.readInt();
+            int image_width = image_data_stream.readInt();
+            System.out.println("Image height : " + image_height + " Image width : " + image_width);
+
+            //byte array for labels
+            byte[] label_data = new byte[number_of_labels];
+
+            //byte array for images
+            int image_size = image_height * image_width;
+            byte[] image_data = new byte[image_size * number_of_images];
+
+            label_data_stream.read(label_data);
+
+            image_data_stream.read(image_data);
+
+            int[][] image;
+
+            train_data_list = new ArrayList<MnistObject>();
+
+            for (int i = 0; i < number_of_labels; i++) {
+                int label = label_data[i];
+                image = new int[image_width][image_height];
+
+                BufferedImage temp = new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_ARGB);
+                for (int row = 0; row < image_height; row++) {
+                    for (int col = 0; col < image_width; col++) {
+                        image[row][col] = image_data[(i * image_size) + ((row * image_width) + col)];
+
+                        int gray = 255 - image[row][col];
+                        int rgb_value = 0xFF000000 | (gray << 16) |
+                                (gray << 8) |
+                                (gray);
+
+                        temp.setRGB(col, row, rgb_value);
+                    }
+                }
+
+
+                MnistObject obj = new MnistObject(temp, label);
+                train_data_list.add(obj);
+//                System.out.println(train_data_list.get(0).getLabel());
+            }
+
+            System.out.println("Mnist dataset loaded. Total size : " + train_data_list.size());
+
+            //todo tidy up this section and remove below code. Only when I decide what is happening with displaying the mnist icon.
+            //This will display one of the mnist icons. Used to prove it was working
+//            Display the image
+//            JFrame frame = new JFrame("Mnist");
+//            frame.setPreferredSize(new Dimension(400, 300));
+//
+////            frame.getContentPane().setLayout(new FlowLayout());
+//            frame.getContentPane().add(new JLabel(new ImageIcon(train_data_list.get(1).getTemp())));
+//            frame.getContentPane().setPreferredSize(new Dimension(200, 200));
+//            frame.pack();
+//            frame.setVisible(true);
+
+            //TODO don't know what this is for?
+            BufferedImage unknown;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return train_data_list;
+    }
+
+	
+}
