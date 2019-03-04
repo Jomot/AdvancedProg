@@ -14,8 +14,8 @@ public class MNISTReader {
 
         DataInputStream label_data_stream = null;
         DataInputStream image_data_stream = null;
-
-        List<MnistObject> train_data_list = null;
+        List<MnistObject> mnist_database_list = null;
+        
         try {
             label_data_stream = new DataInputStream(new FileInputStream(train_label_filename));
             image_data_stream = new DataInputStream(new FileInputStream(train_image_filename));
@@ -26,11 +26,12 @@ public class MNISTReader {
 
             int number_of_labels = label_data_stream.readInt();
             int number_of_images = image_data_stream.readInt();
-            System.out.println("numbers of labels : " + number_of_labels + " number of images : " + number_of_images);
+            System.out.println("Numbers of labels : " + number_of_labels + " Number of images : " + number_of_images);
 
             int image_height = image_data_stream.readInt();
             int image_width = image_data_stream.readInt();
-            System.out.println("Image height : " + image_height + " Image width : " + image_width);
+            System.out.println("Image height : " + image_height);
+            System.out.println("Image width : " + image_width);
 
             //byte array for labels
             byte[] label_data = new byte[number_of_labels];
@@ -45,7 +46,8 @@ public class MNISTReader {
 
             int[][] image;
 
-            train_data_list = new ArrayList<MnistObject>();
+            //Creates an ArrayList that holds MnistObjects.
+            mnist_database_list = new ArrayList<MnistObject>();
 
             for (int i = 0; i < number_of_labels; i++) {
                 int label = label_data[i];
@@ -65,33 +67,21 @@ public class MNISTReader {
                     }
                 }
 
-
+                //Populates the list
                 MnistObject obj = new MnistObject(temp, label);
-                train_data_list.add(obj);
-//                System.out.println(train_data_list.get(0).getLabel());
+                mnist_database_list.add(obj);
+                //System.out.println(train_data_list.get(0).getLabel());
             }
 
-            System.out.println("Mnist dataset loaded. Total size : " + train_data_list.size());
+            System.out.println("Mnist dataset loaded. Total size : " + mnist_database_list.size());
 
-            //todo tidy up this section and remove below code. Only when I decide what is happening with displaying the mnist icon.
-            //This will display one of the mnist icons. Used to prove it was working
-//            Display the image
-//            JFrame frame = new JFrame("Mnist");
-//            frame.setPreferredSize(new Dimension(400, 300));
-//
-////            frame.getContentPane().setLayout(new FlowLayout());
-//            frame.getContentPane().add(new JLabel(new ImageIcon(train_data_list.get(1).getTemp())));
-//            frame.getContentPane().setPreferredSize(new Dimension(200, 200));
-//            frame.pack();
-//            frame.setVisible(true);
-
-            //TODO don't know what this is for?
             BufferedImage unknown;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return train_data_list;
+        return mnist_database_list;
+        
     }
 
 	

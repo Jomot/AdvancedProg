@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -18,15 +19,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 
 public class MainView {
 
-    File fp;
-    BufferedImage selectedFile;
-	
-	
 	// Declaring main view components
 		private JFrame mainWindow;
 		
@@ -45,6 +40,8 @@ public class MainView {
 		
 		MainController controller;
 		ImageModel imgModel;
+
+		private BufferedImage BufferedImage;
 		
 		// Default constructor
 		public MainView() {
@@ -57,10 +54,10 @@ public class MainView {
 			// Create and set up the window.
 			mainWindow = new JFrame("Main window title");
 			mainWindow.setLayout(new BorderLayout());
+			mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 			// Creating file selection panel
 	        JPanel fileSelectPanel = new JPanel();
-	        
 	        fileNameLbl = new JLabel ("File name: ");
 	        fileNameTxt = new JTextField(50);
 	        fileNameTxt.setEnabled(false); 
@@ -137,17 +134,17 @@ public class MainView {
 	        
 	        // add northLayout to mainWindow's north
 	        mainWindow.add(southLayout, BorderLayout.SOUTH);
+	        
+	     
+			
+			// Event handling
+			// Register action listener with openFileBtn
+			//openFileBtn.addActionListener(controller);
 					
 			// Using annonymous inner class
-	        
-	        //Open File Button
 			openFileBtn.addActionListener(new ActionListener() {
-				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
-					//FileSelect(e);
-					
 					File selectedFile = showFileChooserDialog();
 					
 					if(selectedFile != null) {
@@ -171,13 +168,11 @@ public class MainView {
 					else
 						fileNameTxt.setText("No file selected");	
 				}
-			});	
+			});		
 			
-			//Load Image Button
 			loadImageButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-										
 					BufferedImage img = imgModel.getRGBImage();
 					if(img != null) {
 						displayImage(img);
@@ -191,34 +186,27 @@ public class MainView {
 				}
 			});
 			
-			//Open File Button
-			drawCanvasButton.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					
-				}
-			});	
-			
-			//kNN Button
 			compareButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                kNNCalculation KNN = new kNNCalculation();
+
+	                try {
+	                    KNN.CalculateDistance();
+	                } catch (Exception e1) {
+	                    e1.printStackTrace();
+	                }
+	            }
+	        });
+			
+			drawCanvasButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
-					kNNCalculation kNN = new kNNCalculation();
-					
-					try {
-						kNN.Calculation();
-					}
-					catch (Exception e1) {
-						e1.printStackTrace();
-					}
-					
+					DrawDigit DrawDigit = new DrawDigit();
 					
 				}
 			});
-			
 		}
 		
 		public void displayImage(BufferedImage img) {
@@ -226,7 +214,7 @@ public class MainView {
 		}
 		
 		
-		private File showFileChooserDialog() {
+		public File showFileChooserDialog() {
 			fileChooser = new JFileChooser();
 			fileChooser.setCurrentDirectory(new 
 					File(System.getProperty("user.home")));
@@ -237,5 +225,23 @@ public class MainView {
 		    }
 		    return selected_file;
 		}
-	
+		
+//		public BufferedImage createBufferedImage() throws IOException {
+//	        ImageFileHandler img_handler = new ImageFileHandler();
+//
+//	        if (fp.isFile() && fp.exists()) {
+//	            selectedFile = ImageIO.read(fp);
+//	            System.out.println(selectedFile);
+//	        }
+//
+//	        BufferedImage bimage = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+//
+//	        // Draw the image on to the buffered image
+//	        Graphics2D bGr = bimage.createGraphics();
+//	        bGr.drawImage(selectedFile, 0, 0, null);
+//	        System.out.println(bimage);
+//	        bGr.dispose();
+//	        
+//			return bimage;	
+//  }
 }

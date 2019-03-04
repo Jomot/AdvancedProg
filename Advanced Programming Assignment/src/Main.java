@@ -32,9 +32,9 @@ public class Main {
 //		MNISTReader reader = new MNISTReader();
 //		reader.Reader();
 		
-		try {
+try {
 			
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		}
 		catch(Exception e) {
 			System.out.println("Error occured while setting "
@@ -61,6 +61,9 @@ public class Main {
         
 		MNISTReader reader = new MNISTReader();
 		reader.MnistRead();
+		
+		MnistObject distance = new MnistObject();
+		distance.getEuclideanDistance();
 		
 //		double squared_sum = 0;
 //		for(int y = 0; y < org_image.getHeight(); y++) {

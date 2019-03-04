@@ -1,30 +1,42 @@
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class kNNCalculation {
-
-	public void Calculation() throws IOException {
-		
-		MNISTReader mnist = new MNISTReader();
-		List<MnistObject> mnistObjects = mnist.MnistRead();
-		
-		MainView display = new MainView();
-		display.displayImage(img);
-		
-		BufferedImage org_image = display.displayImage(img);
-
-		
 	
-
-		//ImageFileHandler img_handler = new ImageFileHandler();
-		//BufferedImage org_image = img_handler.readFile("E:\\MNIST test images-20190226\\test_images\\tmp\\0_21.png");
+	ImageModel imgModel;
+	
+	private BufferedImage BufferedImage;
+	
+	public void CalculateDistance() throws Exception {
 		
-		for (int i = 0; i < mnistObjects.size(); i++) {
-            BufferedImage compressed_image = mnistObjects.get(i).getTemp();
-            int label = mnistObjects.get(i).getLabel();
+		//Original image - cannot figure out how to use the opened file so this will do for now. Ask in seminar monday.
+		kNNSelector fileSelect = new kNNSelector();
+        fileSelect.SelectFile();
+        BufferedImage input_image = fileSelect.createBufferedImage();
+
+        
+		//List<Double> euclideanDistance = new ArrayList<Double>();
+		
+		//"Compressed image" to compare the original image against. Mnist dataset.
+		MNISTReader mnist = new MNISTReader();
+		
+		//Creates ArrayList to store MnistObjects
+		List<MnistObject> mnistList = mnist.MnistRead();
+		
+		//Comparing the distance between images
+		for (int i = 0; i < mnistList.size(); i++) {
+			
+			//Mnist dataset
+			MnistObject distance = mnistList.get(i);
+            BufferedImage comparison_image = mnistList.get(i).getTemp();
+            int label = mnistList.get(i).getLabel();
+            
             //error checking
-            if ((org_image.getWidth() != compressed_image.getWidth()) || (org_image.getHeight() != compressed_image.getHeight())) {
+            if ((input_image.getWidth() != comparison_image.getWidth()) || (input_image.getHeight() != comparison_image.getHeight())) {
                 try {
 					throw new Exception("The two images have different dimensions");
 				} catch (Exception e) {
@@ -33,40 +45,54 @@ public class kNNCalculation {
 				}
             }
 
+            
             double squared_sum = 0;
-            for (int y = 0; y < org_image.getHeight(); y++) {
-                for (int x = 0; x < org_image.getWidth(); x++) {
+            for (int y = 0; y < input_image.getHeight(); y++) {
+                for (int x = 0; x < input_image.getWidth(); x++) {
 
-                    int rgbvalue_org = org_image.getRGB(x, y);
+                    int rgbvalue_input = input_image.getRGB(x, y);
 
-                    int alpha = (rgbvalue_org >> 24) & 0xff;
-                    int red = (rgbvalue_org >> 16) & 0xff;
-                    int green = (rgbvalue_org >> 8) & 0xff;
-                    int blue = (rgbvalue_org) & 0xff;
+                    int alpha = (rgbvalue_input >> 24) & 0xff;
+                    int red = (rgbvalue_input >> 16) & 0xff;
+                    int green = (rgbvalue_input >> 8) & 0xff;
+                    int blue = (rgbvalue_input) & 0xff;
 
-                    int grayscale_org = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
+                    int grayscale_input = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
 
-                    int rgbvalue_compressed = compressed_image.getRGB(x, y);
+                    int rgbvalue_comparison = comparison_image.getRGB(x, y);
 
-                    alpha = (rgbvalue_compressed >> 24) & 0xff;
-                    red = (rgbvalue_compressed >> 16) & 0xff;
-                    green = (rgbvalue_compressed >> 8) & 0xff;
-                    blue = (rgbvalue_compressed) & 0xff;
+                    alpha = (rgbvalue_comparison >> 24) & 0xff;
+                    red = (rgbvalue_comparison >> 16) & 0xff;
+                    green = (rgbvalue_comparison >> 8) & 0xff;
+                    blue = (rgbvalue_comparison) & 0xff;
 
-                    int grayscale_compressed = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
+                    int grayscale_comparison = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
 
-                    squared_sum += (Math.pow((grayscale_org - grayscale_compressed), 2));
+                    //This is Eculidean Distance
+                    squared_sum += (Math.pow((grayscale_input - grayscale_comparison), 2));
                 }
             }
+            
+            //Set Euclidean Distance in Mnist Object class.
+            double euc = Math.sqrt(squared_sum);
+            System.out.println("Euclidean Disctance: " + euc);
+            distance.setEuclideanDistance(euc);
+	}
 
-            double mean_squared_error = squared_sum / (org_image.getHeight() * org_image.getWidth());
-            double PSNR = 10 * Math.log10(Math.pow(255, 2) / mean_squared_error);
+		Collections.sort(mnistList, new EuclideanComparator());
 
-            System.out.printf("Computed PSNR  %.2f dB for label %d\n", PSNR, label);
-
-		
-		
+        Iterator<MnistObject> itr = mnistList.iterator();
+        while (itr.hasNext()) {
+            MnistObject element = itr.next();
+            System.out.println("Label: " + element.getLabel() + " Euclidean Distance: " + element.getEuclideanDistance());
+        }
+        // dSystem.out.println(distance.getEuclideanDistance());
+        System.out.println("Finished processing");
 		
 	}
-	}
+	
 }
+	
+
+
+

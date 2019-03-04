@@ -35,8 +35,12 @@ public class MnistObject {
         this.temp = temp;
     }
 
-    public double getEuclideanDistance(){ return euclideanDistance;}
+    public double getEuclideanDistance(){ 
+    	return euclideanDistance;
+    }
 
-    public void setEuclideanDistance(double euclideanDistance) {this.euclideanDistance = euclideanDistance;}
+    public void setEuclideanDistance(double euclideanDistance) {
+    	this.euclideanDistance = euclideanDistance;
+    }
 }
 
