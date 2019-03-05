@@ -47,8 +47,10 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
             	
             	
                 try {
-                    ImageIO.write(img, "PNG", new File("E:\\DrawDigit\\DrawDigit.png"));
-                    System.out.println("Image saved");
+                    String workingDir = System.getProperty("user.dir");
+                    System.out.println(workingDir);
+                    ImageIO.write(img, "PNG", new File(workingDir + "\\Images\\DrawDigit\\DrawDigit.png"));
+                    System.out.println("Image saved.\nPlease resize your image.");
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -60,6 +62,7 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
             public void actionPerformed(ActionEvent e) {
                 //todo closes window and instead of disposing of drawing
                 dispose();
+                System.out.println("Please open an image file or draw your digit to open.");
             }
         });
         
@@ -69,7 +72,7 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
             	
             	ResizeDrawnDigit resize = new ResizeDrawnDigit();
             	resize.resizeConstructor();
-            	System.out.println("Digit Resized");        	
+            	System.out.println("Digit Resized\nClose drawing window.");        	
             }
         });
         
@@ -130,28 +133,30 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
 	
 	public void resizeConstructor() {
 		
-		File digitOriginal = new File("E:\\DrawDigit\\DrawDigit.png");
-		File digitResized = new File("E:\\DrawDigit\\DigitResized.png");
+		String workingDir = System.getProperty("user.dir");
+		File digitOriginal = new File(workingDir + "\\Images\\DrawDigit\\DrawDigit.png");
+		File digitResized = new File(workingDir + "\\Images\\DrawDigit\\DigitResized.png");
 		resizeImage(digitOriginal, digitResized, 28, 28, "png");
 		}
 		
-	public void resizeImage(File originalImage, File resizedImage, int width, int height, String format) {
+		public void resizeImage(File originalImage, File resizedImage, int width, int height, String format) {
 			
-		ImageFileHandler img_handler = new ImageFileHandler();
+			ImageFileHandler img_handler = new ImageFileHandler();
 			
-		try {
-			BufferedImage original = img_handler.readFile("E:\\DrawDigit\\DrawDigit.png");
-			BufferedImage resized = new BufferedImage(width, height, original.getType());
-			Graphics2D g2 = resized.createGraphics();
-			g2.drawImage(original,  0 , 0, width, height, null);
-			g2.dispose();
-			ImageIO.write(resized, format, resizedImage);
+			try {
+				String workingDir = System.getProperty("user.dir");
+				BufferedImage original = img_handler.readFile(workingDir + "\\Images\\DrawDigit\\DrawDigit.png");
+				BufferedImage resized = new BufferedImage(width, height, original.getType());
+				Graphics2D g2 = resized.createGraphics();
+				g2.drawImage(original,  0 , 0, width, height, null);
+				g2.dispose();
+				ImageIO.write(resized, format, resizedImage);
+			}
+			catch(IOException ex) {
+				ex.printStackTrace();
+			}
+			
 		}
-		catch(IOException ex) {
-			ex.printStackTrace();
-		}
-			
-	}
 	
 	
 	

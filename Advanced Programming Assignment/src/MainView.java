@@ -44,8 +44,6 @@ public class MainView {
 		// Default constructor
 		public MainView() {
         
-			//controller = new MainController();
-			//controller = new MainController(this);
 			imgModel = new ImageModel();
 			controller = new MainController(this, imgModel);
 			
@@ -71,7 +69,7 @@ public class MainView {
 	        // Creating main operation button panel
 	        JPanel opButtonPanel = new JPanel();
 			
-	        loadImageButton = new JButton("Load Digit");
+	        loadImageButton = new JButton("Load Image");
 	        loadImageButton.setPreferredSize(new Dimension(150, 50));
 	        drawCanvasButton = new JButton("Draw Digit");
 	        drawCanvasButton.setPreferredSize(new Dimension(150, 50));
@@ -109,9 +107,7 @@ public class MainView {
 	        // Display the window.
 			mainWindow.setVisible(true);
 			
-			//////////////////////////////
-			
-			// Creating sub operation button panel
+			// Creating sub operation button panel where kNN and output digit is displayed
 	        JPanel subButtonPanel = new JPanel();
 			
 	        compareButton = new JButton("k-NN Calculation");
@@ -124,25 +120,21 @@ public class MainView {
 	        subButtonPanel.add(compareButton);
 	        subButtonPanel.add(digitLbl);
 	        subButtonPanel.add(digitTxt);
-
 	        
 	        // A JPanel with box layout
 	        JPanel southLayout = new JPanel();
 	        southLayout.setLayout(new BoxLayout(southLayout,
 	        		BoxLayout.Y_AXIS));
 	        
-	        // add both flow layouts to northLayout
+	        // add both flow layouts to southLayout
 	        southLayout.add(subButtonPanel);
 	        
-	        // add northLayout to mainWindow's north
+	        // add southLayout to mainWindow's north
 	        mainWindow.add(southLayout, BorderLayout.SOUTH);
+	        	
 	        
-	     
-			
-			// Event handling
-			// Register action listener with openFileBtn
-			//openFileBtn.addActionListener(controller);
-					
+	        
+			// Event handling					
 			// Using annonymous inner class
 			openFileBtn.addActionListener(new ActionListener() {
 				@Override
@@ -203,6 +195,7 @@ public class MainView {
 	                    digitTxt.setText(String.valueOf(digit));
 	                } catch (Exception e1) {
 	                	digitTxt.setText("NA");
+	                	System.out.println("Image could not be computed!");
 	                }
 	            }
 	        });

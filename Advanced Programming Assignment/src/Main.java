@@ -39,6 +39,10 @@ public class Main {
             }
         });
         
+        
+        String workingDir = System.getProperty("user.dir");
+        System.out.println("Working Directory = " + workingDir);
+        
         System.out.println("Choose File to display.");
         
 //		MNISTReader reader = new MNISTReader();

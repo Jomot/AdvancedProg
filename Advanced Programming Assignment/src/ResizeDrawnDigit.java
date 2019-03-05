@@ -9,8 +9,9 @@ public class ResizeDrawnDigit {
 	
 	public void resizeConstructor() {
 	
-	File digitOriginal = new File("E:\\DrawDigit\\DrawDigit.png");
-	File digitResized = new File("E:\\DrawDigit\\DigitResized.png");
+	String workingDir = System.getProperty("user.dir");
+	File digitOriginal = new File(workingDir + "\\Images\\DrawDigit\\DrawDigit.png");
+	File digitResized = new File(workingDir + "\\Images\\DrawDigit\\DigitResized.png");
 	resizeImage(digitOriginal, digitResized, 28, 28, "png");
 	}
 	
@@ -19,7 +20,8 @@ public class ResizeDrawnDigit {
 		ImageFileHandler img_handler = new ImageFileHandler();
 		
 		try {
-			BufferedImage original = img_handler.readFile("E:\\DrawDigit\\DrawDigit.png");
+			String workingDir = System.getProperty("user.dir");
+			BufferedImage original = img_handler.readFile(workingDir + "\\Images\\DrawDigit\\DrawDigit.png");
 			BufferedImage resized = new BufferedImage(width, height, original.getType());
 			Graphics2D g2 = resized.createGraphics();
 			g2.drawImage(original,  0 , 0, width, height, null);
