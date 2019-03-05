@@ -1,8 +1,6 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,13 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class DrawDigit extends JFrame implements MouseListener, MouseMotionListener {
 	
@@ -42,7 +35,7 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
         add(resizeButton);
 
         g.setColor(Color.white);
-        getContentPane().setBackground(Color.black);
+        //getContentPane().setBackground(Color.black);
         g.fillRect(0,0, img.getWidth(), img.getHeight());
         setSize(400,400);
         setLayout(null);
@@ -94,7 +87,7 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
 		
 		//Colour of drawing
         Graphics g2 = getGraphics();
-        g2.setColor(Color.red);
+        g2.setColor(Color.black);
         g2.fillOval(e.getX(), e.getY(), 40, 40);
 		
 	}

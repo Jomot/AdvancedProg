@@ -8,7 +8,6 @@ public class ImageModel {
 
 	private File fp;
 	private BufferedImage bufImg = null;
-	private BufferedImage drawImg = null;
 	
 	public ImageModel() {
 		// TODO Auto-generated constructor stub

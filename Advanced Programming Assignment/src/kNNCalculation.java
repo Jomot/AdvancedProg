@@ -1,30 +1,21 @@
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
 public class kNNCalculation {
 	
-	ImageModel imgModel;
-	
-	private BufferedImage BufferedImage;
-	
+	public int outputDigit;
+
 	public void CalculateDistance() throws Exception {
 		
 		//Original image - cannot figure out how to use the opened file so this will do for now. Ask in seminar monday.
 		kNNSelector fileSelect = new kNNSelector();
         fileSelect.SelectFile();
         BufferedImage input_image = fileSelect.createBufferedImage();
-
-        
-		//List<Double> euclideanDistance = new ArrayList<Double>();
-		
-		//"Compressed image" to compare the original image against. Mnist dataset.
-		MNISTReader mnist = new MNISTReader();
 		
 		//Creates ArrayList to store MnistObjects
+		MNISTReader mnist = new MNISTReader();
 		List<MnistObject> mnistList = mnist.MnistRead();
 		
 		//Comparing the distance between images
@@ -33,7 +24,6 @@ public class kNNCalculation {
 			//Mnist dataset
 			MnistObject distance = mnistList.get(i);
             BufferedImage comparison_image = mnistList.get(i).getTemp();
-            int label = mnistList.get(i).getLabel();
             
             //error checking
             if ((input_image.getWidth() != comparison_image.getWidth()) || (input_image.getHeight() != comparison_image.getHeight())) {
@@ -50,9 +40,10 @@ public class kNNCalculation {
             for (int y = 0; y < input_image.getHeight(); y++) {
                 for (int x = 0; x < input_image.getWidth(); x++) {
 
+                	//System.out.println("Processing...");
+                	
                     int rgbvalue_input = input_image.getRGB(x, y);
 
-                    int alpha = (rgbvalue_input >> 24) & 0xff;
                     int red = (rgbvalue_input >> 16) & 0xff;
                     int green = (rgbvalue_input >> 8) & 0xff;
                     int blue = (rgbvalue_input) & 0xff;
@@ -61,7 +52,6 @@ public class kNNCalculation {
 
                     int rgbvalue_comparison = comparison_image.getRGB(x, y);
 
-                    alpha = (rgbvalue_comparison >> 24) & 0xff;
                     red = (rgbvalue_comparison >> 16) & 0xff;
                     green = (rgbvalue_comparison >> 8) & 0xff;
                     blue = (rgbvalue_comparison) & 0xff;
@@ -75,7 +65,7 @@ public class kNNCalculation {
             
             //Set Euclidean Distance in Mnist Object class.
             double euc = Math.sqrt(squared_sum);
-            System.out.println("Euclidean Disctance: " + euc);
+            //System.out.println("Euclidean Disctance: " + euc);
             distance.setEuclideanDistance(euc);
 	}
 
@@ -86,11 +76,22 @@ public class kNNCalculation {
             MnistObject element = itr.next();
             System.out.println("Label: " + element.getLabel() + " Euclidean Distance: " + element.getEuclideanDistance());
         }
-        // dSystem.out.println(distance.getEuclideanDistance());
-        System.out.println("Finished processing");
-		
+        
+        //System.out.println("\nLast element: " + mnistList.get(mnistList.size()-1).getLabel() + "\n");
+        
+        this.outputDigit = mnistList.get(mnistList.size()-1).getLabel();
+        
+        System.out.println("\nOutput Digit: " + outputDigit);
+        
+        
+        System.out.println("\nFinished processing\n");
+              	
 	}
 	
+	//OutputDigit getters and setters
+	public int getOutputDigit() {
+		return outputDigit;
+	}	
 }
 	
 

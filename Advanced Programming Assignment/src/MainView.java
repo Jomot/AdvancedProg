@@ -1,13 +1,11 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,7 +20,7 @@ import javax.swing.border.EtchedBorder;
 
 public class MainView {
 
-	// Declaring main view components
+	    // Declaring main view components
 		private JFrame mainWindow;
 		
 		private JButton drawCanvasButton;
@@ -31,6 +29,8 @@ public class MainView {
 		private JButton openFileBtn;
 		private JTextField fileNameTxt;
 		private JLabel fileNameLbl;
+		private JLabel digitLbl;
+		private JTextField digitTxt;
 		
 
 		private JPanel displayPanel;
@@ -40,12 +40,10 @@ public class MainView {
 		
 		MainController controller;
 		ImageModel imgModel;
-
-		private BufferedImage BufferedImage;
 		
 		// Default constructor
 		public MainView() {
-	        
+        
 			//controller = new MainController();
 			//controller = new MainController(this);
 			imgModel = new ImageModel();
@@ -69,7 +67,6 @@ public class MainView {
 	        fileSelectPanel.add(openFileBtn);
 		
 	        // Add JPanel to the JFrame's north position
-	        // mainWindow.add(fileSelectPanel, BorderLayout.PAGE_START);
 			
 	        // Creating main operation button panel
 	        JPanel opButtonPanel = new JPanel();
@@ -82,7 +79,7 @@ public class MainView {
 	        opButtonPanel.add(loadImageButton);
 	        opButtonPanel.add(drawCanvasButton);
 	        
-	     // A JPanel with box layout
+	        // A JPanel with box layout
 	        JPanel northLayout = new JPanel();
 	        northLayout.setLayout(new BoxLayout(northLayout,
 	        		BoxLayout.Y_AXIS));
@@ -94,7 +91,7 @@ public class MainView {
 	        // add northLayout to mainWindow's north
 	        mainWindow.add(northLayout, BorderLayout.NORTH);
 	        
-	     // instantiate a new JPanel to hold image labels
+	        //Instantiate a new JPanel to hold image labels
 	        displayPanel = new JPanel();
 	        displayPanel.setPreferredSize(new Dimension(250, 150));
 	        displayPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -114,17 +111,22 @@ public class MainView {
 			
 			//////////////////////////////
 			
-			// Creating main operation button panel
+			// Creating sub operation button panel
 	        JPanel subButtonPanel = new JPanel();
 			
-	        compareButton = new JButton("Compare Digit");
+	        compareButton = new JButton("k-NN Calculation");
 	        compareButton.setPreferredSize(new Dimension(150, 25));
+	        digitLbl = new JLabel ("Number: ");
+	        digitTxt = new JTextField(5);
+	        digitTxt.setEnabled(true);
 	       
-	        
+	        //Add components to panel
 	        subButtonPanel.add(compareButton);
+	        subButtonPanel.add(digitLbl);
+	        subButtonPanel.add(digitTxt);
 
 	        
-	     // A JPanel with box layout
+	        // A JPanel with box layout
 	        JPanel southLayout = new JPanel();
 	        southLayout.setLayout(new BoxLayout(southLayout,
 	        		BoxLayout.Y_AXIS));
@@ -145,8 +147,8 @@ public class MainView {
 			openFileBtn.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					System.out.println("Choosing file to display...");
 					File selectedFile = showFileChooserDialog();
-					
 					if(selectedFile != null) {
 						fileNameTxt.setText(selectedFile.getAbsolutePath());
 						try {
@@ -173,15 +175,18 @@ public class MainView {
 			loadImageButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					System.out.println("Loading Image...");
 					BufferedImage img = imgModel.getRGBImage();
 					if(img != null) {
 						displayImage(img);
+						System.out.println("Image Loaded");
 					}
 					else {
 						JOptionPane.showMessageDialog(null, 
 								"No image file is choosen", 
 								"Image error", 
 								JOptionPane.ERROR_MESSAGE);
+						System.out.println("Image could not be loaded!");
 					}
 				}
 			});
@@ -190,11 +195,14 @@ public class MainView {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                kNNCalculation KNN = new kNNCalculation();
-
+	                System.out.println("Choosing file for k-NN calculation...");
 	                try {
-	                    KNN.CalculateDistance();
+	                	KNN.CalculateDistance();
+	                	KNN.getOutputDigit();
+	                    int digit = KNN.getOutputDigit();
+	                    digitTxt.setText(String.valueOf(digit));
 	                } catch (Exception e1) {
-	                    e1.printStackTrace();
+	                	digitTxt.setText("NA");
 	                }
 	            }
 	        });
@@ -225,23 +233,4 @@ public class MainView {
 		    }
 		    return selected_file;
 		}
-		
-//		public BufferedImage createBufferedImage() throws IOException {
-//	        ImageFileHandler img_handler = new ImageFileHandler();
-//
-//	        if (fp.isFile() && fp.exists()) {
-//	            selectedFile = ImageIO.read(fp);
-//	            System.out.println(selectedFile);
-//	        }
-//
-//	        BufferedImage bimage = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
-//
-//	        // Draw the image on to the buffered image
-//	        Graphics2D bGr = bimage.createGraphics();
-//	        bGr.drawImage(selectedFile, 0, 0, null);
-//	        System.out.println(bimage);
-//	        bGr.dispose();
-//	        
-//			return bimage;	
-//  }
 }
