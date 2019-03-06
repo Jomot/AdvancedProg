@@ -9,7 +9,7 @@ public class EuclideanComparator implements Comparator<MnistObject> {
 	@Override
 	public int compare(MnistObject o1, MnistObject o2) {
 		// TODO Auto-generated method stub
-		return (int) (o1.getEuclideanDistance() - o2.getEuclideanDistance());
+		return (int) (o2.getEuclideanDistance() - o1.getEuclideanDistance());
 	}
 
 }

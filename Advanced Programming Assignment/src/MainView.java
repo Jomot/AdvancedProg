@@ -30,7 +30,9 @@ public class MainView {
 		private JTextField fileNameTxt;
 		private JLabel fileNameLbl;
 		private JLabel digitLbl;
+		private JLabel kLbl;
 		private JTextField digitTxt;
+		private JTextField kTxt;
 		
 
 		private JPanel displayPanel;
@@ -115,11 +117,16 @@ public class MainView {
 	        digitLbl = new JLabel ("Number: ");
 	        digitTxt = new JTextField(5);
 	        digitTxt.setEnabled(true);
+	        kLbl = new JLabel ("Confidence: ");
+	        kTxt = new JTextField(5);
+	        kTxt.setEnabled(true);
 	       
 	        //Add components to panel
 	        subButtonPanel.add(compareButton);
 	        subButtonPanel.add(digitLbl);
 	        subButtonPanel.add(digitTxt);
+	        subButtonPanel.add(kLbl);
+	        subButtonPanel.add(kTxt);
 	        
 	        // A JPanel with box layout
 	        JPanel southLayout = new JPanel();
@@ -193,8 +200,10 @@ public class MainView {
 	                	KNN.getOutputDigit();
 	                    int digit = KNN.getOutputDigit();
 	                    digitTxt.setText(String.valueOf(digit));
+	                    kTxt.setText("K = 1");
 	                } catch (Exception e1) {
 	                	digitTxt.setText("NA");
+	                	kTxt.setText("NA");
 	                	System.out.println("Image could not be computed!");
 	                }
 	            }

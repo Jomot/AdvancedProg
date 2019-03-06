@@ -1,7 +1,11 @@
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class kNNCalculation {
 	
@@ -74,18 +78,45 @@ public class kNNCalculation {
         Iterator<MnistObject> itr = mnistList.iterator();
         while (itr.hasNext()) {
             MnistObject element = itr.next();
-            System.out.println("Label: " + element.getLabel() + " Euclidean Distance: " + element.getEuclideanDistance());
+            //System.out.println("Label: " + element.getLabel() + " Euclidean Distance: " + element.getEuclideanDistance());
+        }
+        
+        //This creates a sublist of k=10. Need to calculate the mode of the sublist.
+        List<MnistObject> subItems = new ArrayList<MnistObject>(mnistList.subList(0, 10));
+        System.out.println("\nk = 10\n");
+        for(int i = 0; i < subItems.size(); i++){
+            System.out.println("Label: " + subItems.get(i).getLabel() + " Distance: " + subItems.get(i).getEuclideanDistance());
+           // System.out.println(mostCommon(subItems).get(i).getLabel());
         }
         
         //System.out.println("\nLast element: " + mnistList.get(mnistList.size()-1).getLabel() + "\n");
         
         this.outputDigit = mnistList.get(mnistList.size()-1).getLabel();
         
-        System.out.println("\nOutput Digit: " + outputDigit);
+        //System.out.println("\nOutput Digit: " + outputDigit);
         
         
         System.out.println("\nFinished processing\n");
               	
+	}
+	
+	public static <T> T mostCommon(List<T> subItems) {
+		 Map<T, Integer> map = new HashMap<>();
+		 
+		 for (T t: subItems) {
+			 Integer val = map.get(t);
+			 map.put(t,  val == null ? 1 : val + 1);
+		 }
+		 
+		 Entry<T, Integer> max = null;
+		 
+		 for (Entry<T, Integer> e : map.entrySet()) {
+			 if (max == null || e.getValue() > max.getValue())
+				 max = e;
+		 }
+		
+		return max.getKey();
+		
 	}
 	
 	//OutputDigit getters and setters
