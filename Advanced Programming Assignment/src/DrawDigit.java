@@ -91,8 +91,7 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
 		//Colour of drawing
         Graphics g2 = getGraphics();
         g2.setColor(Color.black);
-        g2.fillOval(e.getX(), e.getY(), 40, 40);
-		
+        g2.fillOval(e.getX(), e.getY(), 40, 40);		
 	}
 
 	@Override

@@ -178,7 +178,8 @@ public class MainView {
 					BufferedImage img = imgModel.getRGBImage();
 					if(img != null) {
 						displayImage(img);
-						System.out.println("Image Loaded");
+						System.out.println("Image Loaded.");
+						System.out.println("Press kNN Calculation button.");
 					}
 					else {
 						JOptionPane.showMessageDialog(null, 
@@ -194,8 +195,8 @@ public class MainView {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                kNNCalculation KNN = new kNNCalculation();
-	                System.out.println("Choosing file for k-NN calculation...");
-	                try {
+	                System.out.println("\nChoosing file for k-NN calculation...");
+	                try {           
 	                	KNN.CalculateDistance();
 	                	KNN.getOutputDigit();
 	                    int digit = KNN.getOutputDigit();
@@ -204,7 +205,7 @@ public class MainView {
 	                } catch (Exception e1) {
 	                	digitTxt.setText("NA");
 	                	kTxt.setText("NA");
-	                	System.out.println("Image could not be computed!");
+	                	System.out.println("\nImage could not be computed!");
 	                }
 	            }
 	        });

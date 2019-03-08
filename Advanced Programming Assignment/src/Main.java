@@ -41,7 +41,7 @@ public class Main {
         
         
         String workingDir = System.getProperty("user.dir");
-        System.out.println("Working Directory = " + workingDir);
+        System.out.println("Working Directory = " + workingDir + "\n");
         
         System.out.println("Choose File to display.");
         

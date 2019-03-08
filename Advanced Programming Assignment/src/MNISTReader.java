@@ -21,21 +21,27 @@ public class MNISTReader {
         List<MnistObject> mnist_database_list = null;
         
         try {
+        	System.out.println("\n--------------------------");
+        	System.out.println("Loading Mnist Dataset...");
+        	System.out.println("--------------------------");
+        	
             label_data_stream = new DataInputStream(new FileInputStream(train_label_filename));
             image_data_stream = new DataInputStream(new FileInputStream(train_image_filename));
 
             int startcode_label = label_data_stream.readInt();
             int startcode_img = image_data_stream.readInt();
-            System.out.println("Label start code  = " + startcode_label + " Image start code = " + startcode_img);
+            System.out.println("Label start code  = " + startcode_label);
+            System.out.println("Image start code = " + startcode_img);
 
             int number_of_labels = label_data_stream.readInt();
             int number_of_images = image_data_stream.readInt();
-            System.out.println("Numbers of labels : " + number_of_labels + " Number of images : " + number_of_images);
+            System.out.println("Numbers of labels: " + number_of_labels);
+            System.out.println("Number of images: " + number_of_images);
 
             int image_height = image_data_stream.readInt();
             int image_width = image_data_stream.readInt();
-            System.out.println("Image height : " + image_height);
-            System.out.println("Image width : " + image_width);
+            System.out.println("Image height: " + image_height);
+            System.out.println("Image width: " + image_width);
 
             //byte array for labels
             byte[] label_data = new byte[number_of_labels];
@@ -64,8 +70,8 @@ public class MNISTReader {
 
                         int gray = 255 - image[row][col];
                         int rgb_value = 0xFF000000 | (gray << 16) |
-                                (gray << 8) |
-                                (gray);
+                                					 (gray << 8) |
+                                					 (gray);
 
                         temp.setRGB(col, row, rgb_value);
                     }
@@ -74,10 +80,11 @@ public class MNISTReader {
                 //Populates the list
                 MnistObject obj = new MnistObject(temp, label);
                 mnist_database_list.add(obj);
-                //System.out.println(train_data_list.get(0).getLabel());
             }
+            System.out.println("--------------------------------");
+            System.out.println("Mnist dataset loaded. Total size: " + mnist_database_list.size());
+            System.out.println("--------------------------------");
 
-            System.out.println("Mnist dataset loaded. Total size : " + mnist_database_list.size());
 
             BufferedImage unknown;
 
