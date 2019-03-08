@@ -85,7 +85,6 @@ public class kNNCalculation {
         Iterator<MnistObject> itr = mnistList.iterator();
         while (itr.hasNext()) {
             MnistObject element = itr.next();
-            //System.out.println("Label: " + element.getLabel() + " Euclidean Distance: " + element.getEuclideanDistance());
         }
         
         //This creates a sublist of k=10. Need to calculate the mode of the sublist.
@@ -96,13 +95,10 @@ public class kNNCalculation {
            // System.out.println(mostCommon(subItems).get(i).getLabel());
         }
         
-        //System.out.println("\nLast element: " + mnistList.get(mnistList.size()-1).getLabel() + "\n");
-        
+        //Output = first element of the list. k=1. Ideally the below code would be implemented in future work.
         this.outputDigit = mnistList.get(0).getLabel();
         
-        System.out.println("\nOutput Digit: " + outputDigit);
-        
-        
+        System.out.println("\nOutput Digit: " + outputDigit);    
         System.out.println("\nFinished processing.");
               	
 	}

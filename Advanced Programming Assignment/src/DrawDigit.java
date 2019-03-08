@@ -35,7 +35,6 @@ public class DrawDigit extends JFrame implements MouseListener, MouseMotionListe
         add(resizeButton);
 
         g.setColor(Color.white);
-        //getContentPane().setBackground(Color.black);
         g.fillRect(0,0, img.getWidth(), img.getHeight());
         setSize(400,400);
         setLayout(null);

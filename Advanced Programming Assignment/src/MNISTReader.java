@@ -13,9 +13,6 @@ public class MNISTReader {
         String train_label_filename = workingDir + "\\Images\\t10k-labels.idx1-ubyte";
         String train_image_filename = workingDir + "\\Images\\t10k-images.idx3-ubyte";
 
-//        String train_label_filename = "E:\\t10k-labels.idx1-ubyte";
-//        String train_image_filename = "E:\\t10k-images.idx3-ubyte";
-
         DataInputStream label_data_stream = null;
         DataInputStream image_data_stream = null;
         List<MnistObject> mnist_database_list = null;

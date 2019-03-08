@@ -21,8 +21,7 @@ import javax.swing.border.EtchedBorder;
 public class MainView {
 
 	    // Declaring main view components
-		private JFrame mainWindow;
-		
+		private JFrame mainWindow;		
 		private JButton drawCanvasButton;
 		private JButton loadImageButton;
 		private JButton compareButton;
@@ -34,7 +33,6 @@ public class MainView {
 		private JTextField digitTxt;
 		private JTextField kTxt;
 		
-
 		private JPanel displayPanel;
 		private JLabel imageLabel;
 		

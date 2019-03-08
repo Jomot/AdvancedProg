@@ -43,16 +43,8 @@ public class Main {
         String workingDir = System.getProperty("user.dir");
         System.out.println("Working Directory = " + workingDir + "\n");
         
-        System.out.println("Choose File to display.");
-        
-//		MNISTReader reader = new MNISTReader();
-//		reader.MnistRead();
-//		
-//		MnistObject distance = new MnistObject();
-//		distance.getEuclideanDistance();
-		
-	}
-		
+        System.out.println("Choose File to display.");		
+	}		
 }
 
 
